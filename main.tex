@@ -1,0 +1,451 @@
+
+\documentclass[conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    urlcolor=blue,
+    citecolor=black
+}
+\urlstyle{same}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{ Coding Quantum \\
+{\footnotesize A quantum programming language review}
+}
+
+\author{\IEEEauthorblockN{Parish Wolfe}
+\IEEEauthorblockA{\textit{Dept. of Computer Science} \\
+\textit{Vanderbilt University)}\\
+Raleigh, NC \\
+parish.m.wolfe@vanderbilt.edu}
+}
+
+\maketitle
+
+\begin{abstract}
+Quantum computing programming languages and frameworks are compared.
+\end{abstract}
+
+\begin{IEEEkeywords}
+quantum computing, quantum programming, qubit, gate
+\end{IEEEkeywords}
+
+\section{Introduction}
+Many companies are racing to be first to market with quantum computing technology. 
+Large technology organizations like Google, IBM, Microsoft and more are rapidly making developments in the quantum computing space. 
+In 2018 Google created the 72 qubit chip called Bristlecone \cite{b1}. 
+IBM took the title from Google with a 127 qubit processor, called the IBM Eagle \cite{b2}. 
+Quantum technology is rapidly advancing, but it hasn't quite made it to consumer products just yet. 
+Many businesses would likely benefit from these devices, however, due to limited availability of the devices, widespread adoption has not yet occurred. 
+While not widespread, there is some degree of adoption. 
+Processor architecture plays a role in the instruction set and quantum computers are no different. 
+That being said, there are many quantum programming languages available on the market today. 
+In this paper, we will discuss and review available options. 
+
+
+\subsection{Quantum Programming - Fair Warning}
+The existing high powered quantum computers aren't yet available for purchase by individuals, however this doesn't mean that you can't start quantum programming now. 
+Currently, many of these languages offer quantum processing emulation and/or simulation. 
+Most of the languages are low level as quantum computing is in its infancy compared to traditional computing. 
+As the technology progresses, we may see more of these machine available on the open market. 
+The SpinQ Gemini \cite{b3}, a two qubit affordable quantum computer is available for the low price of five thousand united states dollars. 
+Two qubits is not quite enough to do any real work as this device is for educational purposes. 
+The fact that it exists makes it evident that these machines will arrive at the hands of the individual user within our lifetime.
+
+\subsection{Overview of Available Languages}
+It is too early in the emerging technology lifecycle to truly identify a leader when it comes to quantum programming languages. 
+Here we will highlight some of the standouts as well as some of the lesser known and brand new languages. 
+Among the large American technology companies, Microsoft has Q\#, a true quantum programming language which is similar syntax to C\#, the Microsoft version of the C programming language. 
+IBM offers Qiskit, a python library that simulates quantum computing with C. 
+Google is the creator of Cirq, another python library. 
+Silq is a newer offering from Eidgenössische Technische Hochschule Zürich, a public research university in Switzerland. 
+This organization's name roughly translates to Swiss Federal Technical University Zurich. 
+Silq is like Microsoft Q\#, but with more pythonic syntax. 
+TKET is another low level quantum language that interacts through python libraries. 
+TKET is offered by Quantinuum, a subsidiary of Cambridge Quantum and is majority owned by Honeywell \cite{b4}. 
+Rigetti Computing is a small silicon valley startup which provides the Forest language. 
+Strawberry Fields is a Beatles album, an area in Central Par, and a quantum programming language from Toronto based company Xanadu. 
+There are many more languages available, that go far beyond the scope of this paper. 
+Companies large and small from across the globe are fighting for dominance in this emerging market.
+
+\section{IBM Qiskit}
+Qiskit is a fully featured python package that touts quantum primitives and easy integration for neural networks and machine learning. 
+The package is split into four use cases with different modules per use case \cite{b7}. 
+Those use cases are Machine Learning, Nature, Finance, and Optimization. 
+Each of these uses must be installed as an add on with pip. 
+The Finance extra is meant for stock trading. 
+While nature is meant for solving problems associated with chemistry, physics, and biology. 
+Optimization contains quadratic equation solvers of various types. 
+
+\begin{verbatim}
+pip install qiskit[machine-learning]
+pip install qiskit[nature]
+pip install qiskit[finance]
+pip install qiskit[optimization]
+\end{verbatim}
+
+The package has an exhaustive feature set. 
+Each add on package extends the functionality of the primitives so that a user need not waste time reinventing the wheel. 
+As far as quantum languages go, the primitives are simple and easy to use. 
+Various types of quantum gates can be applied to the circuit by calling methods on the QuantumCircuit object. 
+A Bell state circuit can be constructed in as little as five lines of code \cite{b7}. 
+
+\begin{verbatim}
+from qiskit import QuantumCircuit
+qc = QuantumCircuit(2, 2)
+qc.h(0) # Hadamard gate
+qc.cx(0, 1) # Double CNOT gate
+qc.measure([0, 1], [0, 1]) # convert to bits
+qc.draw() # display quantum circuit
+\end{verbatim}
+
+More complex circuits require additional classes like QuantumRegister and ClassicalRegister. 
+The Parameter class is an abstraction allowing for the insertion of data into the algorithm. 
+This is an impressive package with many options. 
+IMB CLoud offers the ability to run applications written in Qiskit on real quantum hardware.
+
+
+
+\section{Microsoft Q\#}
+Microsoft Q\# is a much lower level programming language. 
+It is greatly verbose compared to some of the other languages. 
+Azure allows for a program in Q\# to run on real quantum hardware just like some of the other offerings on this list. 
+The program structure of a Q\# program begins with a namespace,then imports from various packages \cite{b6}. 
+\begin{verbatim}
+namespace Microsoft.Quantum.Samples {
+    open Microsoft.Quantum.Arithmetic; 
+\end{verbatim}
+It is a strongly typed language. 
+It has support for user defined types, but has many built-in types. 
+Variable declarations, iterators, and conditional logic are all similar to C\#. 
+A qubit is represented as type Qubit. 
+Quantum operations can be performed with keywords like CNOT and register. 
+Knowledge of quantum computing and probability is assumed, like in the coin flip application below. 
+\begin{verbatim}
+@EntryPoint()
+operation MeasureOneQubit() : Result {
+    use q = Qubit();  
+    H(q);      
+    let result = M(qubit);
+    if result == One { X(qubit); }
+    return result;
+}
+\end{verbatim}
+If we were to create the Bell Circuit that we would need a CCNOT operation from the Microsoft.Quantum.QSharp.Core package. 
+\begin{verbatim}
+operation CCNOT (control1 : Qubit, \
+    control2 : Qubit, target : Qubit) \
+    : Unit is Adj + Ctl
+\end{verbatim}
+
+The language is extensible. Additional packages available are Quantum Chemistry, Quantum Machine Learning, and Quantum Numerics \cite{b6}. 
+Overall, it is a great choice of language. 
+The Q\# language documentation is mixed in with general information on all of Microsoft quantum offerings. 
+This could be characterized as bad form depending on one's perception.
+
+
+
+\section{ETHzürich Silq}
+Silq is an interesting language in that it combines the low level programming of Microsoft Q\# with Python's simple syntax. 
+Special unicode symbols are suggested for several characters, but these are replaceable with simple ASCII characters. 
+In the language Grover's Algorithm is much more comparable to the mathematical notation \cite{b8}.
+\begin{verbatim}
+import groverDiffusion;
+def grover[n:!N](f: const uint[n] !→ lifted B:!N{
+	nIterations:=floor(\pi/(4·asin(2^(-n/2))));
+	cand:=0:uint[n];
+    for k in [0..n){ cand[k]:=H(cand[k]); }
+    
+	for k in [0..nIterations){
+		if f(cand){ phase(\pi); }
+		cand:=groverDiffusion(cand);
+	}
+	return measure(cand) as !N;
+}
+\end{verbatim}
+This language is geared more towards education than business usage. 
+Much of the syntax is indistinguishable from python including loops, function definitions, and variable declarations. 
+Many code examples are available in their public GitHub repository \cite{b9}. 
+This language is abstracted a bit from measuring individual qubits, but the same objective can be achieved. 
+
+
+
+\section{Google Cirq}
+In the pursuit of quantum superiority, Google has developed the python framework Cirq. 
+Cirq is capable of running on real quantum hardware via Google Cloud's Quantum Computing Service. 
+In addition, this software is easier to get started than any other language on this list due to Google Colab. 
+A \href{https://colab.research.google.com/github/quantumlib/Cirq/blob/master/docs/start/start.ipynb}{link} to run this software on cloud hardware is found on the getting started page. 
+The package supports predefined quantum gates including the ability to define a custom gate. 
+
+\begin{verbatim}
+bell_circuit = cirq.Circuit()
+q0, q1 = cirq.LineQubit.range(2)
+bell_circuit.append(cirq.H(q0))
+bell_circuit.append(cirq.CNOT(q0, q1))
+results = s.simulate(bell_circuit)
+bell_circuit.append( \
+    cirq.measure(q0, q1, key='result'))
+samples = s.run(bell_circuit, repetitions=1000)
+\end{verbatim}
+
+The code above shows the same Bell State Circuit that was explained in Qiskit. 
+The Circuit object is instantiated then gate class methods are appended to the circuit. 
+Cirq has three "types" of qubits available including GridQuibit, LineQubit, and NamedQubit. 
+The NamedQubit is a normal singular qubit while the line and grid options are reserved for bulk operations as they instantiate multiple qubits at a time. 
+Gates and operations are immutable objects that the documentation advises against modifying after instantiation. 
+All the common gates are included, with an option to create a custom gate if the need arises. 
+The measurement is considered a gate.
+Grover's Algorithm is very verbose using the Cirq package in comparison to other languages. 
+Some of the helper functions required for the operation of Grovers have been omitted. 
+They can be found in the documentation \cite{b10}. 
+A user-friendly feature of Cirq is the ability to print a visual representation of the circuit.
+\begin{verbatim}
+def grover_iteration(qubits,ancilla,oracle):
+    c = cirq.Circuit()
+    c.append(cirq.H.on_each(*qubits))
+    c.append( 
+        [cirq.X(ancilla), cirq.H(ancilla)])
+    c.append(oracle)
+
+    c.append(cirq.H.on_each(*qubits))
+    c.append(cirq.X.on_each(*qubits))
+    c.append(cirq.H.on(qubits[1]))
+    c.append(cirq.CNOT(qubits[0],qubits[1]))
+    c.append(cirq.H.on(qubits[1]))
+    c.append(cirq.X.on_each(*qubits))
+    c.append(cirq.H.on_each(*qubits))
+
+    c.append( \
+        cirq.measure(*qubits, key="result"))
+    return c
+\end{verbatim}
+Google has a history of decommissioning projects that do not see wild popularity.
+If Cirq gains traction, it will likely see support for years to come.
+Overall Cirq is a fine choice and high contender for quantum programming. 
+
+\section{D-Wave Ocean}
+%Ocean sux
+Ocean is a language from the company D-Wave. 
+This company developed a specific type of qunatum computer called a quantum annealer. 
+The physical process differs from many other quantum computer manufacturers. 
+Ocean is focused on optimization problems instead of the broad scope that exists in other languages. 
+Ocean does not have the ability to create custom gates or instantiate qubits like other languages. 
+Instead the flow of programming is formulate the sample, define the objective, and minimized the objective. 
+This is done through quadratic models \cite{b11}.
+D-Wave offers a python software development kit that installs an executable from pip or source. 
+This executable must be configured for the environment to operate. After configuration you can import the ocean solver modules into your python code \cite{b11}.
+
+
+\begin{verbatim}
+from dimod.generators import and_gate
+bqm = and_gate('in1', 'in2', 'out')
+from dwave.system import DWaveSampler
+from dwave.system import EmbeddingComposite
+sampler = EmbeddingComposite(DWaveSampler())
+samples = sampler.sample(bqm, num_reads=1000)
+print(samples)
+\end{verbatim}
+
+This is an example of a quantum solver that is usable against a pandas dataframe object. 
+Many types of solvers are available in the ocean ecosystem.
+Ocean may not be the best choice depending on a user's use case.
+
+\section{Quantum Inspire QASM}
+QASM is a proper quantum programming language. 
+It has a python library that runs QASM code, much in the way that one might generate SQL code in python. 
+Operations are placed into a multi-line string then run with the execute\_qasm class method. 
+QI\_URL is required configuration, indicating that there is a web request taking place upon execution. 
+It is perhaps the most elegant and simple language on the list with Grover's Algorithm taking only 15 lines.
+\begin{verbatim}
+version 1.0
+qubits 3
+.init
+H q[0:2]
+.grover(2)
+# oracle
+{X q[0] | H q[2] }
+Toffoli q[0], q[1], q[2]
+{H q[2] | X q[0]}
+# diffusion
+{H q[0] | H q[1] | H q[2]}
+{X q[1] | X q[0] | X q[2] }
+H q[2]
+Toffoli q[0], q[1], q[2]
+H q[2]
+{X q[1] | X q[0] | X q[2] }
+{H q[0] | H q[1] | H q[2]}
+\end{verbatim}
+
+The instantiation of qubits is relatively simple and a "." denotes the start of an operation \cite{b12}. 
+The bell state is much more concise and simplistic compared to other languages. 
+\begin{verbatim}
+version 1.0
+qubits 2
+.prepare
+    prep_z q[0:1]
+.entangle
+    H q[0]
+    CNOT q[0], q[1]
+.measurement
+    measure_all
+\end{verbatim}
+As the name implies, the simplicity of the language is inspiring, however the poor integration with python raises questions on its usability long term.
+
+
+\section{Quantinuum t$|$ket⟩}
+Cambridge Quantum and Honeywell bring us Quantinuum, makers of TKET. 
+The official name has Unicode special characters so we will refer to the software as TKET here.
+Besides the complicated ownership structure, TKET is abstracted with python package pytket.
+In an installation structure similar to Ocean, TKET must first be installed. 
+Next, pytket is installed as an interface into the tooling \cite{b11}.
+The syntax for TKET is similar to other languages.
+\begin{verbatim}
+from pytket import Circuit
+c = Circuit(2,2)
+c.H(0)
+c.Rz(0.25, 0)
+c.CX(1,0)
+c.measure_all()
+\end{verbatim}
+Using this library, metadata names can be specified for circuits.
+Then registers are added with the add\_q\_register method.
+Adding qubits into a circuit is simple as well. 
+This can be done with add\_qubit(Qubit("b")).
+This allows the ability to chain the addition to the circuit and the instatntiation in one line. 
+Interestingly enough, this Quantinuum supported package also has an integration for QSAM.
+Pytket is a great choice with simple syntax, however, integration into existing machine learning and AI python packages are lacking.
+
+
+
+\section{Rigetti Forest}
+Rigetti has an interesting history. 
+Chad Rigetti is a physicist who was working at IBM in the early 2010s. 
+He left IBM to found Regetti in 2013 with the support of Y Combinator, a startup incubator.
+Forest is the backend that Regetti has created which is a tight integration of quantum and classical computing devices.
+To operate on the Forest you must use a python package called pyquil. 
+Bell State on pyquil is fairly straightforward \cite{b14}.
+
+\begin{verbatim}
+from pyquil import get_qc, Program
+from pyquil.gates import H, CNOT, MEASURE
+from pyquil.quilbase import Declare
+program = Program(
+    Declare("ro", "BIT", 2),
+    H(0),
+    CNOT(0, 1),
+    MEASURE(0, ("ro", 0)),
+    MEASURE(1, ("ro", 1)),
+).wrap_in_numshots_loop(10)
+qc = get_qc("2q-qvm")
+qc.run(qc.compile(program)\
+    ).readout_data.get("ro")
+\end{verbatim}
+
+In pyquil, all the typical gates are present as well as the option to make a custom gate. 
+One noticeable difference is that a qubit is Declared as a BIT.
+There is no official example of Grover's Algorithm.
+Code examples of this algorithm can be found on GitHub. 
+Time on a real quantum processing unit can be reserved on the Regetti website. 
+Rigetti also provides several options to get started. 
+One can start the simulation environment with JupyterLab, local installation, or a Forest Docker Image \cite{b14}. 
+By including a docker image, Rigetti may be one of the most forward thinking contenders.
+
+
+\section{Xanadu Strawberry Fields}
+Xanadu is the maker of both Strawberry Fields and Penny Lane. Penny Lane is a package for machine learning using quantum programming. StrawberryFields is the default quantum programming backend for Penny Lane. Penny Lane also supports Qiskit, Cirq, Forest, and Q\#.
+Code written with the StrawberryFields python package gets serialized into another programming language called Blackbird. Backbird is quantum assembly language \cite{b15}. Xanadu does not recommend the use of blackbird directly.
+The syntax of the package is slightly different than other languages. 
+\begin{verbatim}
+prog = sf.Program(3)
+with prog.context as q:
+    ops.Sgate(0.54) | q[0]
+    ops.Sgate(0.54) | q[1]
+    ops.Sgate(0.54) | q[2]
+    ops.BSgate(0.43, 0.1) | (q[0], q[2])
+    ops.BSgate(0.43, 0.1) | (q[1], q[2])
+eng = sf.Engine(
+    "fock", 
+    backend_options={"cutoff_dim": 10})
+result = eng.run(prog)
+state = result.state
+\end{verbatim}
+The package measures on a "Fock" basis and this keyword is required in many places. 
+The use of the context manager is required for successful operation.
+Gates come from the sf.ops package, and custom gates are not an option \cite{b15}.
+If one wanted to create a custom gate, use of the low level programming in the blackbird language would likely be required. 
+Circuits are defined as programs similar to Forest.
+Overall Strawberry Fields is a fine choice given that it supports many different backends. 
+Functionality could easily be extended via the backend if required.
+
+
+
+\section{Closing Remarks}
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Quantum Programming Popularity}
+    \label{tab:table1}
+    \begin{tabular}{l|c} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+      \textbf{Language} & \textbf{Score}\\
+      \hline
+      Qiskit(terra) & 2.1917\\
+      Quiskit(qiskit) & 2.63\\
+      QDK(Microsoft) & 1.253 \\
+      Q\# & 1.205 \\
+      Cirq & 1.05 \\
+      PyQuil & 0.452 \\
+      Penny Lane & 0.364 \\
+      ProjectQ & 0.256 \\
+      OpenQASM & 0.197 \\
+      Strawberry Fields & 0.184 \\
+      Yao & 0.18 \\
+      Silq & 0.164 \\
+      QASM & 0.128 \\
+      LIQUid & 0.124 \\
+      QMASM & 0.093 \\
+      Paddle quantum & 0.091 \\
+      Quantum++ & 0.091 \\
+      Ocean & 0.084 \\
+      QCL & 0.066 \\
+      Tequila & 0.059 \\
+    \end{tabular}
+  \end{center}
+\end{table}
+
+Now that we have reviewed the top contenders in quantum programming, there is one last thing to discuss, market share. Ultimately, the market leader in the early state of an emerging technology may not be the leader when the technology matures. The world saw this phenomenon when Facebook overtook MySpace and later when TikTok overtook both Facebook and Instagram. Now BeReal is overtaking TikTok. Due to the limited amount of data available on quantum programming market share at this time, we will refer to a source that uses GitHub and StackOverflow data to determine popularity. See Table \ref{tab:table1} for this information \cite{b16}. Nearly all of the languages we have discussed are on this list with the top five companies being IBM, Microsoft, Google, Rigetti, and Xanadu. Based on the overview of all the languages discussed here, the popularity seems to somewhat align with the set of features available in the language. Rigetti and Xanadu were founded in the mid twenty tens, and the rest of the top companies are long established big tech companies. Rigetti's approach of integrating traditional computing technology with quantum seems to be the bridge to the gap that is needed to get widespread adoption of quantum technology. The IEEE has a branch for quantum technology already set up. IEEE referendums on quantum technologies are sure to ensue in the coming years.
+
+
+
+
+
+
+
+\begin{thebibliography}{00}
+
+\bibitem{b6} Bradben, “Implementing A Q\# program - azure Quantum,” Implementing a Q\# program - Azure Quantum | Microsoft Learn. [Online]. Available: \href{https://learn.microsoft.com/en-us/azure/quantum/user-guide/language/programstructure/}{https://learn.microsoft.com/en-us/azure/quantum/user-guide/language/programstructure/}. [Accessed: 25-Sep-2022]. 
+\bibitem{b10} “CIRQ : google quantum ai,” Google Quantum AI. [Online]. Available: \href{https://quantumai.google/cirq}{https://quantumai.google/cirq}. [Accessed: 25-Sep-2022]. 
+\bibitem{b12} D. Voorhoede, “QASM: A Quantum programming language,” Quantum Inspire. [Online]. Available: \href{https://www.quantum-inspire.com/kbase/cqasm/}{https://www.quantum-inspire.com/kbase/cqasm/}. [Accessed: 25-Sep-2022]. 
+\bibitem{b8} “Documentation,” Silq. [Online]. Available: \href{https://silq.ethz.ch/documentation}{https://silq.ethz.ch/documentation}. [Accessed: 25-Sep-2022]. 
+\bibitem{b1} E. Conover, “Google moves toward quantum supremacy with 72-qubit computer,” Science News, 08-Aug-2019. [Online]. Available: \href{https://www.sciencenews.org/article/google-moves-toward-quantum-supremacy-72-qubit-computer}{https://www.sciencenews.org/article/google-moves-toward-quantum-supremacy-72-qubit-computer}. [Accessed: 25-Sep-2022]. 
+\bibitem{b9} “ETH-Sri/SILQ,” GitHub. [Online]. Available: \href{https://github.com/eth-sri/silq}{https://github.com/eth-sri/silq}. [Accessed: 25-Sep-2022]. 
+\bibitem{b14} “Getting Started,” Getting started - QCS documentation. [Online]. Available: \href{https://docs.rigetti.com/qcs/getting-started}{https://docs.rigetti.com/qcs/getting-started}. [Accessed: 25-Sep-2022]. 
+\bibitem{b11} “Getting started,” Getting Started - Ocean Documentation 5.4.0 documentation. [Online]. Available: \href{https://docs.ocean.dwavesys.com/en/stable/getting_started.html}{https://docs.ocean.dwavesys.com/en/stable/getting\_started.html}. [Accessed: 25-Sep-2022]. 
+\bibitem{b4} Honeywell, “Things to know about quantinuum,” Home. [Online]. Available: \href{https://www.honeywell.com/us/en/news/2021/11/things-to-know-about-quantinuum}{https://www.honeywell.com/us/en/news/2021/11/things-to-know-about-quantinuum}. [Accessed: 25-Sep-2022]. 
+\bibitem{b7} IBM, “Getting started,” Getting started - Qiskit Machine Learning 0.4.0 documentation. [Online]. Available: \href{https://qiskit.org/documentation/machine-learning/getting_started.html}{https://qiskit.org/documentation/machine-learning/getting\_started.html}. [Accessed: 25-Sep-2022]. 
+\bibitem{b2} M. Sparkes, “IBM creates largest ever superconducting quantum computer,” New Scientist, 18-Nov-2021. [Online]. Available: \href{https://www.newscientist.com/article/2297583-ibm-creates-largest-ever-superconducting-quantum-computer/}{https://www.newscientist.com/article/2297583-ibm-creates-largest-ever-superconducting-quantum-computer/}. [Accessed: 25-Sep-2022]. 
+\bibitem{b3} Shenzhen SpinQ Technology Co., Ltd., “Gemini·2 qubits desktop NMR Quantum Computer,” SpinQ. [Online]. Available: \href{https://www.spinquanta.com/products-solutions/gemini}{https://www.spinquanta.com/products-solutions/gemini}. [Accessed: 25-Sep-2022]. 
+\bibitem{b15} Strawberry Fields. [Online]. Available: \href{https://strawberryfields.ai/}{https://strawberryfields.ai/}. [Accessed: 25-Sep-2022]. 
+\bibitem{b16} T. Quant, “An in-depth look at the popularity of quantum computing languages and Frameworks,” Quantum Zeitgeist, 19-Sep-2021. [Online]. Available: \href{https://quantumzeitgeist.com/an-in-depth-look-at-the-popularity-of-quantum-computing-languages-and-frameworks/}{https://quantumzeitgeist.com/an-in-depth-look-at-the-popularity-of-quantum-computing-languages-and-frameworks/}. [Accessed: 25-Sep-2022]. 
+\bibitem{b5} T. Simonite, “The tiny startup racing Google to build a quantum computing chip,” MIT Technology Review, 02-Apr-2020. [Online]. Available: \href{https://www.technologyreview.com/2016/02/08/162384/the-tiny-startup-racing-google-to-build-a-quantum-computing-chip/}{https://www.technologyreview.com/2016/02/08/162384/the-tiny-startup-racing-google-to-build-a-quantum-computing-chip/}. [Accessed: 25-Sep-2022]. 
+\bibitem{b13} “T|Ket : A retargetable compiler for NISQ devices - iopscience,” IopScience. [Online]. Available: \href{https://iopscience.iop.org/article/10.1088/2058-9565/ab8e92}{https://iopscience.iop.org/article/10.1088/2058-9565/ab8e92}. [Accessed: 25-Sep-2022]. 
+\end{thebibliography}
+\end{document}
+
